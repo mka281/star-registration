@@ -22,7 +22,7 @@ class Blockchain {
       if (blockHeight == -1) {
         this.addBlock(
           new Block('First block in the chain - Genesis block"')
-        ).then(() => console.log("Added"));
+        ).then(() => console.log("Added Genesis Block"));
       }
     });
   }
@@ -46,6 +46,7 @@ class Blockchain {
     // Adding block object to levelDB
     await this.addLevelDBData(newBlock.height, JSON.stringify(newBlock));
     console.log(`Block ${newBlock.height} added`);
+    return newBlock;
   }
 
   // Get block height

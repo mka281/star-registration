@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Blockchain = require("../blockchain/Blockchain");
+const Block = require("../blockchain/Block");
 
 // @route   GET /block/:blockHeight
 // @desc    Retrieve block from database
@@ -16,10 +17,12 @@ router.get("/:blockHeight", (req, res) => {
 });
 
 // @route   POST /block
-// @desc    Tests block route
+// @desc    Add block to database
 // @access  Public
-router.post("/", (req, res) =>
-  res.json({ message: "New block added to chain" })
-);
+router.post("/", (req, res) => {
+  Blockchain.addBlock(new Block(req.query.body))
+    .then(block => res.json(block))
+    .catch(err => res.json(err));
+});
 
 module.exports = router;
