@@ -22,6 +22,10 @@ Send a GET request to
 
 Send a POST request to http://localhost:8000/block with `body` query containing a string.
 
+#### To get whole blockchain data:
+
+Send a GET request to `http://localhost:8000/chain`
+
 ### Example testing with [CURL](https://curl.haxx.se/)
 
 - Get Block
@@ -38,4 +42,10 @@ curl -X "POST" "http://localhost:8000/block" \
      -d $'{
   "body": "Testing block with test string data"
 }'
+```
+
+- Get Chain
+
+```
+curl "http://localhost:8000/chain"
 ```
