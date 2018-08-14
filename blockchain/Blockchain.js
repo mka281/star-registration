@@ -105,6 +105,8 @@ class Blockchain {
         errorLog.push(i);
       }
     }
+    // validate last block on the chain
+    if (!this.validateBlock(blockHeight)) errorLog.push(blockHeight);
 
     if (errorLog.length > 0) {
       console.log(`Block errors = ${errorLog.length}`);
