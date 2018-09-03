@@ -2,14 +2,16 @@ const express = require("express");
 const router = express.Router();
 const Blockchain = require("../blockchain/Blockchain");
 const Block = require("../blockchain/Block");
-const toHex = require("../helpers/toHex");
+const stringToHex = require("../helpers/stringToHex");
+const hexToString = require("../helpers/hexToString");
 
 // @route   GET /block/:blockHeight
-// @desc    Retrieve block from database
+// @desc    Retrieve block with story decoded from database
 // @access  Public
 router.get("/:blockHeight", (req, res) => {
   Blockchain.getBlock(req.params.blockHeight)
     .then(block => {
+      block.body.star.storyDecoded = hexToString(block.body.star.story);
       res.json(block);
     })
     .catch(err => res.json({ NotFoundError: `Key ${blockHeight} not found in database` }));
@@ -25,7 +27,7 @@ router.post("/", (req, res) => {
   // Check if address is validated
   if (validatedAddresses[address]) {
     let { ra, dec } = star;
-    let story = toHex(star.story);
+    let story = stringToHex(star.story);
     // Define block body
     let body = {
       address,

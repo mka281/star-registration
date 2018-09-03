@@ -1,3 +1,4 @@
+// Used in app.js
 module.exports = validationRequests => {
   let countDown = () => {
     Object.keys(validationRequests).forEach(key => {

@@ -1,3 +1,4 @@
+// Used in POST /block route
 module.exports = str => {
   let hex = "";
   for (let i = 0; i < str.length; i++) {
