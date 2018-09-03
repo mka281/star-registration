@@ -18,7 +18,7 @@ There are two different API endpoints.
 #### Sample POST request to `http://localhost:8000/signature/request` with wallet `address`
 
 ```
-curl -X "POST" "http://localhost:8000/requestValidation" \
+curl -X "POST" "http://localhost:8000/signature/request" \
      -H 'Content-Type: application/json; charset=utf-8' \
      -d $'{
   "address": "142BDCeSGbXjWKaAnYXbMpZ6sbrSAo3DpZ"
@@ -41,7 +41,7 @@ curl -X "POST" "http://localhost:8000/requestValidation" \
 #### Sample POST request to http://localhost:8000/signature/validate with `address` and `signature`
 
 ```
-curl -X "POST" "http://localhost:8000/message-signature/validate" \
+curl -X "POST" "http://localhost:8000/signature/validate" \
      -H 'Content-Type: application/json; charset=utf-8' \
      -d $'{
   "address": "142BDCeSGbXjWKaAnYXbMpZ6sbrSAo3DpZ",
@@ -225,7 +225,8 @@ curl "http://localhost:8000/chain"
           "story":"00"}
         },
         "time":"1535970514",
-        "previousBlockHash":""},
+        "previousBlockHash":""
+    },
     1: {
       "hash":"1106146991c7c500edf2b6e9380d4b32121d22ead9e871004bccc54a5aede252",
       "height":1,
@@ -234,11 +235,12 @@ curl "http://localhost:8000/chain"
         "star":{
           "ra":"07h 03m 45s",
           "dec":"-15° 38' 00",
-          "story":"4d7920666972737420737461722072656769737472792e20466f72206d6f726520696e666f3a2068747470733a2f2f696e2d7468652d736b792e6f72672f646174612f6f626a6563742e7068703f69643d545943353936332d313933382d31"}
-        },
+          "story":"4d7920666972737420737461722072656769737472792e20466f72206d6f726520696e666f3a2068747470733a2f2f696e2d7468652d736b792e6f72672f646174612f6f626a6563742e7068703f69643d545943353936332d313933382d31"
+        }
+      },
       "time":"1535971506",
       "previousBlockHash":"1a7a57541f3650f019aad4c33d0e504d1c581ee6f2423c84f37d3e769e2f7d2f"
-      }",
+    },
     2: {
       "height":2,
       "body": {
