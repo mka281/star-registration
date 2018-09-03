@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Blockchain = require("../blockchain/Blockchain");
 const Block = require("../blockchain/Block");
+const toHex = require("../helpers/toHex");
 
 // @route   GET /block/:blockHeight
 // @desc    Retrieve block from database
@@ -11,16 +12,24 @@ router.get("/:blockHeight", (req, res) => {
     .then(block => {
       res.json(block);
     })
-    .catch(err =>
-      res.json({ NotFoundError: `Key ${blockHeight} not found in database` })
-    );
+    .catch(err => res.json({ NotFoundError: `Key ${blockHeight} not found in database` }));
 });
 
 // @route   POST /block
 // @desc    Add block to database
 // @access  Public
 router.post("/", (req, res) => {
-  Blockchain.addBlock(new Block(req.query.body))
+  let { address, star } = req.body;
+  let { ra, dec } = star;
+  let story = toHex(star.story);
+  let mag = star.mag || null;
+
+  let body = {
+    address,
+    star: { ra, dec, story }
+  };
+
+  Blockchain.addBlock(new Block(body))
     .then(block => res.json(block))
     .catch(err => res.json(err));
 });
