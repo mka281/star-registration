@@ -31,7 +31,7 @@ router.post("/request", (req, res) => {
 // @desc    Validate signature
 // @access  Public
 router.post("/validate", (req, res) => {
-  let { validationRequests } = req.app.locals;
+  let { validationRequests, validatedAddresses } = req.app.locals;
   let { address, signature } = req.body;
 
   // Check if address in validationRequests object
@@ -44,8 +44,13 @@ router.post("/validate", (req, res) => {
     let registerStar = bitcoinMessage.verify(message, address, signature);
 
     let messageSignature;
-    registerStar ? (messageSignature = "valid") : (messageSignature = "invalid");
-
+    if (registerStar) {
+      messageSignature = "valid";
+      // Add address to validated address object
+      validatedAddresses[address] = true;
+    } else {
+      messageSignature = "invalid";
+    }
     res.json({
       registerStar,
       status: {

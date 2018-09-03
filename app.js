@@ -19,5 +19,8 @@ app.locals.validationRequests = {};
 let { validationRequests } = app.locals;
 require("./helpers/countdown")(validationRequests);
 
+// keep validated addresses in this object
+app.locals.validatedAddresses = {};
+
 const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`Server running on port ${port}`));

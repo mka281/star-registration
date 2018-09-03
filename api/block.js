@@ -20,18 +20,24 @@ router.get("/:blockHeight", (req, res) => {
 // @access  Public
 router.post("/", (req, res) => {
   let { address, star } = req.body;
-  let { ra, dec } = star;
-  let story = toHex(star.story);
-  let mag = star.mag || null;
+  let { validatedAddresses } = req.app.locals;
 
-  let body = {
-    address,
-    star: { ra, dec, story }
-  };
-
-  Blockchain.addBlock(new Block(body))
-    .then(block => res.json(block))
-    .catch(err => res.json(err));
+  // Check if address is validated
+  if (validatedAddresses[address]) {
+    let { ra, dec } = star;
+    let story = toHex(star.story);
+    // Define block body
+    let body = {
+      address,
+      star: { ra, dec, story }
+    };
+    // Create block with defined body
+    Blockchain.addBlock(new Block(body))
+      .then(block => res.json(block))
+      .catch(err => res.json(err));
+  } else {
+    res.json({ NotFoundError: `Address ${address} not found in validated addresses` });
+  }
 });
 
 module.exports = router;
