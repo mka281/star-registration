@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const block = require("./api/block");
 const chain = require("./api/chain");
 const signature = require("./api/signature");
+const stars = require("./api/stars");
 
 // use body-parser
 app.use(express.json()); // to support JSON-encoded bodies
@@ -13,6 +14,7 @@ app.use(express.urlencoded({ extended: false })); // to support URL-encoded bodi
 app.use("/block", block);
 app.use("/chain", chain);
 app.use("/signature", signature);
+app.use("/stars", stars);
 
 // define validationRequests object and pass it to countdown helper
 app.locals.validationRequests = {};

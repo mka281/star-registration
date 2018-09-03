@@ -20,9 +20,9 @@ class Blockchain {
   constructor() {
     this.getBlockHeight().then(blockHeight => {
       if (blockHeight == -1) {
-        this.addBlock(
-          new Block('First block in the chain - Genesis block"')
-        ).then(() => console.log("Added Genesis Block"));
+        this.addBlock(new Block('First block in the chain - Genesis block"')).then(() =>
+          console.log("Added Genesis Block")
+        );
       }
     });
   }
@@ -60,6 +60,11 @@ class Blockchain {
     return JSON.parse(await this.getLevelDBData(blockHeight));
   }
 
+  // Get star block by its hash
+  async getBlockByHash(hash) {
+    return await this.getBlockByHashFromDB(hash);
+  }
+
   async getChain() {
     return await this.getChainFromDB();
   }
@@ -78,9 +83,7 @@ class Blockchain {
     if (blockHash === validBlockHash) {
       return true;
     } else {
-      console.log(
-        `Block #${blockHeight} invalid hash:\n${blockHash}<>${validBlockHash}`
-      );
+      console.log(`Block #${blockHeight} invalid hash:\n${blockHash}<>${validBlockHash}`);
       return false;
     }
   }
@@ -131,6 +134,27 @@ class Blockchain {
       db.get(key, (err, value) => {
         err ? reject(err) : resolve(value);
       });
+    });
+  }
+
+  // Get block by its hash
+  getBlockByHashFromDB(hash) {
+    return new Promise((resolve, reject) => {
+      let block;
+      db.createReadStream()
+        .on("data", data => {
+          let value = JSON.parse(data.value);
+          let blockHash = value.hash;
+          if (blockHash == hash) {
+            block = value;
+          }
+        })
+        .on("error", err => {
+          reject(err);
+        })
+        .on("close", () => {
+          resolve(block);
+        });
     });
   }
 
