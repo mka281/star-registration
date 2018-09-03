@@ -20,9 +20,11 @@ class Blockchain {
   constructor() {
     this.getBlockHeight().then(blockHeight => {
       if (blockHeight == -1) {
-        this.addBlock(new Block('First block in the chain - Genesis block"')).then(() =>
-          console.log("Added Genesis Block")
-        );
+        let blockBody = {
+          address: "00",
+          star: { ra: "00", dec: "00", story: "00" }
+        };
+        this.addBlock(new Block(blockBody)).then(() => console.log("Added Genesis Block"));
       }
     });
   }
