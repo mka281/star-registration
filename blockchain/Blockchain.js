@@ -65,6 +65,12 @@ class Blockchain {
     return await this.getBlockByHashFromDB(hash);
   }
 
+  // Get block with the same address
+  async getBlocksByAddress(address) {
+    return await this.getBlocksByAddressFromDB(address);
+  }
+
+  // Get whole chain
   async getChain() {
     return await this.getChainFromDB();
   }
@@ -154,6 +160,27 @@ class Blockchain {
         })
         .on("close", () => {
           resolve(block);
+        });
+    });
+  }
+
+  // Get block by its hash
+  getBlocksByAddressFromDB(address) {
+    return new Promise((resolve, reject) => {
+      let blocks = [];
+      db.createReadStream()
+        .on("data", data => {
+          let value = JSON.parse(data.value);
+          let blockAddress = value.body.address;
+          if (blockAddress == address) {
+            blocks.push(value);
+          }
+        })
+        .on("error", err => {
+          reject(err);
+        })
+        .on("close", () => {
+          resolve(blocks);
         });
     });
   }
