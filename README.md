@@ -128,7 +128,7 @@ curl "http://localhost:8000/block/1"
 }
 ```
 
-### To get a star by block height:
+### To get a star by block hash:
 
 #### Sample GET request to `http://localhost:8000/stars/hash/:hash` with block `hash`
 
