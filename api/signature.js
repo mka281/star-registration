@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const bitcoin = require("bitcoinjs-lib");
+const bitcoinMessage = require("bitcoinjs-message");
 
 // @route   POST /signature/request
 // @desc    Request signature message
@@ -15,7 +17,7 @@ router.post("/request", (req, res) => {
   let validationWindow = 300;
 
   // Add wallet address and remaining time to global validationRequests object
-  validationRequests[address] = validationWindow;
+  validationRequests[address] = [validationWindow, timestamp];
 
   res.json({
     address,
@@ -23,6 +25,40 @@ router.post("/request", (req, res) => {
     message,
     validationWindow
   });
+});
+
+// @route   POST /signature/validate
+// @desc    Validate signature
+// @access  Public
+router.post("/validate", (req, res) => {
+  let { validationRequests } = req.app.locals;
+  let { address, signature } = req.body;
+
+  // Check if address in validationRequests object
+  if (validationRequests[address]) {
+    let timestamp = validationRequests[address][1];
+    let message = `${address}:${timestamp}:starRegistry`;
+    let validationWindow = validationRequests[address][0];
+
+    // Verify signature
+    let registerStar = bitcoinMessage.verify(message, address, signature);
+
+    let messageSignature;
+    registerStar ? (messageSignature = "valid") : (messageSignature = "invalid");
+
+    res.json({
+      registerStar,
+      status: {
+        address,
+        timestamp,
+        message,
+        validationWindow,
+        messageSignature
+      }
+    });
+  } else {
+    res.json({ NotFoundError: `Address ${address} not found` });
+  }
 });
 
 module.exports = router;
