@@ -26,17 +26,25 @@ router.post("/", (req, res) => {
 
   // Check if address is validated
   if (validatedAddresses[address]) {
-    let { ra, dec } = star;
-    let story = stringToHex(star.story);
-    // Define block body
-    let body = {
-      address,
-      star: { ra, dec, story }
-    };
-    // Create block with defined body
-    Blockchain.addBlock(new Block(body))
-      .then(block => res.json(block))
-      .catch(err => res.json(err));
+    let { ra, dec, story } = star;
+    // Check if star.ca and star.dec exist
+    if (ra && dec && story) {
+      story = stringToHex(story);
+      if (story == false) {
+        res.json({ NotFoundError: `Story must include only ASCII characters, limited to 500` });
+      }
+      // Define block body
+      let body = {
+        address,
+        star: { ra, dec, story }
+      };
+      // Create block with defined body
+      Blockchain.addBlock(new Block(body))
+        .then(block => res.json(block))
+        .catch(err => res.json(err));
+    } else {
+      res.json({ NotFoundError: `You must provide star object with ra, dec and story fields` });
+    }
   } else {
     res.json({ NotFoundError: `Address ${address} not found in validated addresses` });
   }
