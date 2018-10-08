@@ -6,8 +6,8 @@ const hexToString = require("../helpers/hexToString");
 // @route   GET /stars/hash/:hash
 // @desc    Retrieve entire star block with story decoded
 // @access  Public
-router.get("/hash/:hash", (req, res) => {
-  const { hash } = req.params;
+router.get("/hash:HASH", (req, res) => {
+  const hash = req.params.HASH.substring(1);
   Blockchain.getBlockByHash(hash)
     .then(block => {
       block.body.star.storyDecoded = hexToString(block.body.star.story);
@@ -19,8 +19,8 @@ router.get("/hash/:hash", (req, res) => {
 // @route   GET /stars/address/:address
 // @desc    Retrieve multiple star blocks by their addresses
 // @access  Public
-router.get("/address/:address", (req, res) => {
-  const { address } = req.params;
+router.get("/address:ADDRESS", (req, res) => {
+  const address = req.params.ADDRESS.substring(1);
   Blockchain.getBlocksByAddress(address)
     .then(blocks => {
       blocks.forEach(block => {

@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: false })); // to support URL-encoded bodi
 // use api routes
 app.use("/block", block);
 app.use("/chain", chain);
-app.use("/signature", signature);
+app.use("", signature);
 app.use("/stars", stars);
 
 // define validationRequests object and pass it to countdown helper

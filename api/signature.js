@@ -6,22 +6,29 @@ const bitcoinMessage = require("bitcoinjs-message");
 // @route   POST /signature/request
 // @desc    Request signature message
 // @access  Public
-router.post("/request", (req, res) => {
+router.post("/requestValidation", (req, res) => {
   let { validationRequests } = req.app.locals;
   let { address } = req.body;
-  let timestamp = new Date()
-    .getTime()
-    .toString()
-    .slice(0, -3);
-  let message = `${address}:${timestamp}:starRegistry`;
-  let validationWindow = 300;
+  let requestTimeStamp;
+  let validationWindow;
+  if (validationRequests[address]) {
+    let requestTimeStamp = validationRequests[address][1];
+    let validationWindow = validationRequests[address][0];
+  } else {
+    let requestTimeStamp = new Date()
+      .getTime()
+      .toString()
+      .slice(0, -3);
+    let validationWindow = 300;
 
-  // Add wallet address and remaining time to global validationRequests object
-  validationRequests[address] = [validationWindow, timestamp];
+    // Add wallet address and remaining time to global validationRequests object
+    validationRequests[address] = [validationWindow, requestTimeStamp];
+  }
+  let message = `${address}:${requestTimeStamp}:starRegistry`;
 
   res.json({
     address,
-    timestamp,
+    requestTimeStamp,
     message,
     validationWindow
   });
@@ -30,14 +37,14 @@ router.post("/request", (req, res) => {
 // @route   POST /signature/validate
 // @desc    Validate signature
 // @access  Public
-router.post("/validate", (req, res) => {
+router.post("/message-signature/validate", (req, res) => {
   let { validationRequests, validatedAddresses } = req.app.locals;
   let { address, signature } = req.body;
 
   // Check if address in validationRequests object
   if (validationRequests[address]) {
-    let timestamp = validationRequests[address][1];
-    let message = `${address}:${timestamp}:starRegistry`;
+    let requestTimestamp = validationRequests[address][1];
+    let message = `${address}:${requestTimestamp}:starRegistry`;
     let validationWindow = validationRequests[address][0];
 
     // Verify signature
@@ -55,7 +62,7 @@ router.post("/validate", (req, res) => {
       registerStar,
       status: {
         address,
-        timestamp,
+        requestTimestamp,
         message,
         validationWindow,
         messageSignature
