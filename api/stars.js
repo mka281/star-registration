@@ -3,7 +3,7 @@ const router = express.Router();
 const Blockchain = require("../blockchain/Blockchain");
 const hexToString = require("../helpers/hexToString");
 
-// @route   GET /stars/hash/:hash
+// @route   GET /stars/hash/:HASH
 // @desc    Retrieve entire star block with story decoded
 // @access  Public
 router.get("/hash:HASH", (req, res) => {
@@ -16,7 +16,7 @@ router.get("/hash:HASH", (req, res) => {
     .catch(err => res.json({ NotFoundError: `Key ${hash} not found in database` }));
 });
 
-// @route   GET /stars/address/:address
+// @route   GET /stars/address/:ADDRESS
 // @desc    Retrieve multiple star blocks by their addresses
 // @access  Public
 router.get("/address:ADDRESS", (req, res) => {

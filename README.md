@@ -15,10 +15,10 @@ There are two different API endpoints.
 
 ### To send a signature message request:
 
-#### Sample POST request to `http://localhost:8000/signature/request` with wallet `address`
+#### Sample POST request to `http://localhost:8000/requestValidation` with wallet `address`
 
 ```
-curl -X "POST" "http://localhost:8000/signature/request" \
+curl -X "POST" "http://localhost:8000/requestValidation" \
      -H 'Content-Type: application/json; charset=utf-8' \
      -d $'{
   "address": "142BDCeSGbXjWKaAnYXbMpZ6sbrSAo3DpZ"
@@ -38,10 +38,10 @@ curl -X "POST" "http://localhost:8000/signature/request" \
 
 ### To validate your blockchain ID:
 
-#### Sample POST request to http://localhost:8000/signature/validate with `address` and `signature`
+#### Sample POST request to http://localhost:8000/message-signature/validate with `address` and `signature`
 
 ```
-curl -X "POST" "http://localhost:8000/signature/validate" \
+curl -X "POST" "http://localhost:8000/message-signature/validate" \
      -H 'Content-Type: application/json; charset=utf-8' \
      -d $'{
   "address": "142BDCeSGbXjWKaAnYXbMpZ6sbrSAo3DpZ",
@@ -130,10 +130,10 @@ curl "http://localhost:8000/block/1"
 
 ### To get a star by block hash:
 
-#### Sample GET request to `http://localhost:8000/stars/hash/:hash` with block `hash`
+#### Sample GET request to `http://localhost:8000/stars/hash:HASH` with block `HASH`
 
 ```
-curl "http://localhost:8000/stars/hash/a59e9e399bc17c2db32a7a87379a8012f2c8e08dd661d7c0a6a4845d4f3ffb9f"
+curl "http://localhost:8000/stars/hash:a59e9e399bc17c2db32a7a87379a8012f2c8e08dd661d7c0a6a4845d4f3ffb9f"
 ```
 
 #### JSON Response Example
@@ -158,10 +158,10 @@ curl "http://localhost:8000/stars/hash/a59e9e399bc17c2db32a7a87379a8012f2c8e08dd
 
 ### To get a list of all star blocks by the same wallet address:
 
-#### Sample GET request to `http://localhost:8000/stars/address/:address` with wallet `address`
+#### Sample GET request to `http://localhost:8000/stars/address:ADDRESS` with wallet `ADDRESS`
 
 ```
-curl "http://localhost:8000/stars/address/142BDCeSGbXjWKaAnYXbMpZ6sbrSAo3DpZ"
+curl "http://localhost:8000/stars/address:142BDCeSGbXjWKaAnYXbMpZ6sbrSAo3DpZ"
 ```
 
 #### JSON Response Example

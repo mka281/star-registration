@@ -27,7 +27,7 @@ router.post("/", (req, res) => {
   // Check if address is validated
   if (validatedAddresses[address]) {
     let { ra, dec, story } = star;
-    // Check if star.ca and star.dec exist
+    // Check if star.ca && star.dec && star.story exist
     if (ra && dec && story) {
       story = stringToHex(story);
       if (story == false) {
