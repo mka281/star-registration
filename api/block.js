@@ -40,7 +40,12 @@ router.post("/", (req, res) => {
       };
       // Create block with defined body
       Blockchain.addBlock(new Block(body))
-        .then(block => res.json(block))
+        .then((block) => {
+          // Force a wallet to verify again for further star registries
+          delete validatedAddresses[address];
+          // Return block as response
+          res.json(block)}
+        )
         .catch(err => res.json(err));
     } else {
       res.json({ NotFoundError: `You must provide star object with ra, dec and story fields` });
