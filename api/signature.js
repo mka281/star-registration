@@ -12,14 +12,14 @@ router.post("/requestValidation", (req, res) => {
   let requestTimeStamp;
   let validationWindow;
   if (validationRequests[address]) {
-    let requestTimeStamp = validationRequests[address][1];
-    let validationWindow = validationRequests[address][0];
+    requestTimeStamp = validationRequests[address][1];
+    validationWindow = validationRequests[address][0];
   } else {
-    let requestTimeStamp = new Date()
+    requestTimeStamp = new Date()
       .getTime()
       .toString()
       .slice(0, -3);
-    let validationWindow = 300;
+    validationWindow = 300;
 
     // Add wallet address and remaining time to global validationRequests object
     validationRequests[address] = [validationWindow, requestTimeStamp];
